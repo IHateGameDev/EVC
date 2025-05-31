@@ -1,6 +1,6 @@
 <div align="center">
 
-# @PROJECT_NAME@ Guidelines
+# EVC Guidelines
 
 </div>
 
@@ -14,11 +14,11 @@
 
 ### Downloading
 
-To get the @PROJECT_NAME@, run the following command in your terminal:
+To get the EVC, run the following command in your terminal:
 
 ```bash
-git clone https://github.com/IHateGameDev/@PROJECT_NAME@.git
-cd @PROJECT_NAME@
+git clone https://github.com/IHateGameDev/EVC.git
+cd EVC
 
 # Get APIMacros dependencies if they are not installed:
 wget https://raw.github.com/IHateGameDev/APIMacros/getAPIMacros.sh | sh api # override shared useful

@@ -1,6 +1,6 @@
 <div align="center">
 
-# @PROJECT_NAME@
+# EVC
 
 </div>
 
@@ -9,7 +9,7 @@
 ![Static Badge](https://img.shields.io/badge/Release-t0.0.1-red)
 ![Static Badge](https://img.shields.io/badge/Build%20status-tested-green)
 [![Static Badge](https://img.shields.io/badge/License-MIT-orange)](../License)
-[![Static Badge](https://img.shields.io/badge/Documentation-page-darkcyan)](https://ihategamedev.github.io/@PROJECT_NAME@/)
+[![Static Badge](https://img.shields.io/badge/Documentation-page-darkcyan)](https://ihategamedev.github.io/EVC/)
 
 </div>
 

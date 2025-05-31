@@ -1,6 +1,6 @@
 /*
  * Use MIT License
- * Copyright (c) @CURRENT_YEAR@ semenovihandrei
+ * Copyright (c) 2025 semenovihandrei
  */
 
 #include <unity/unity.h>

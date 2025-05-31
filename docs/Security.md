@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-We support only latest stable version and versions in table, but if you have a question you can go to [Issues](https://github.com/IHateGameDev/@PROJECT_NAME@/issues).
+We support only latest stable version and versions in table, but if you have a question you can go to [Issues](https://github.com/IHateGameDev/EVC/issues).
 
 | Version  | Supported          |
 | -------- | ------------------ |

@@ -1,41 +1,68 @@
 cmake_minimum_required(VERSION 3.10)
-project(Template)
+project(EVC)
 
-option(REMOVE_INPUTS "Remove *.in files" ON)
+###### OPTIONS SECTION ######
 
-set(PROJECT_NAME "defaultProjectName" CACHE STRING "Project name insert")
-set(LIBRARY_PREFIX "defaultLibraryPrefix" CACHE STRING "Library prefix")
-set(STRUCT_PREFIX "${LIBRARY_PREFIX}" CACHE STRING "Struct prefix")
+option(BUILD_STATIC "Building static library" ON)
+option(BUILD_SHARED "Building shared library" OFF)
+option(BUILD_TESTS "Building tests for library" ON)
 
-string(TOUPPER ${LIBRARY_PREFIX} MACRO_PREFIX)
-string(TOLOWER ${LIBRARY_PREFIX} FUNCTION_PREFIX)
-string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
+set(C_COMPILER "clang" CACHE STRING "Compiler for C")
+set(OPT_LEVEL "3" CACHE STRING "Optimization level")
 
-string(TIMESTAMP CURRENT_YEAR "%Y")
+###### SETUP COMPILERS SECTION ######
 
-message(STATUS "Poject name: ${PROJECT_NAME}")
-message(STATUS "Library prefix: ${LIBRARY_PREFIX}")
-message(STATUS "Struct prefix: ${STRUCT_PREFIX}")
-message(STATUS "Macro prefix: ${MACRO_PREFIX}")
-message(STATUS "Function prefix: ${FUNCTION_PREFIX}")
-message(STATUS "Current year: ${CURRENT_YEAR}")
+find_program(C_COMPILER_PATH ${C_COMPILER})
 
-file(GLOB_RECURSE ffi "*.in")
+if(C_COMPILER_PATH)
+  message(STATUS "${C_COMPILER} found: ${C_COMPILER_PATH}")
+  set(CMAKE_C_COMPILER ${C_COMPILER_PATH})
+else()
+  message(WARNING "${C_COMPILER} not found. Please install it.")
+endif()
 
-foreach(fileIn ${ffi})
-  message(STATUS "File input: ${fileIn}")
+###### SETUP C SECTION ######
 
-  string(LENGTH ${fileIn} fileOutLength)
-  math(EXPR fileOutWLELength "${fileOutLength} - 3")
-  string(SUBSTRING "${fileIn}" 0 ${fileOutWLELength} fileOut)
+set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-  message(STATUS "File output ${fileOut}\n")
+include_directories(
+  ${CMAKE_SOURCE_DIR}
+  ${CMAKE_SOURCE_DIR}/EVC
+)
 
-  configure_file(${fileIn} ${fileOut} @ONLY)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -O${OPT_LEVEL}")
 
-  if(REMOVE_INPUTS)
-    file(REMOVE ${fileIn})
-  endif()
-endforeach()
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+endif()
 
-file(RENAME "${CMAKE_SOURCE_DIR}/Lib" "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}")
+###### INSTALL AND BUILDING SECTION ######
+
+install(DIRECTORIES ${CMAKE_SOURCE_DIR}/EVC DESTINATION include)
+
+file(GLOB_RECURSE LibSources
+  ${CMAKE_SOURCE_DIR}/src/*.c
+  ${CMAKE_SOURCE_DIR}/src/*.s
+  ${CMAKE_SOURCE_DIR}/src/*.S
+)
+
+if(BUILD_STATIC)
+  add_library(evc-static STATIC ${LibSources})
+  set_target_properties(evc-static PROPERTIES OUTPUT_NAME evc)  
+  install(TARGETS evc-static DESTINATION lib)
+endif()
+
+if(BUILD_SHARED)
+  add_library(evc-shared SHARED ${LibSources})
+  set_target_properties(evc-shared PROPERTIES OUTPUT_NAME evc)
+  target_compile_options(evc-shared PRIVATE "-DAPI_SHARED_BUILD")
+  install(TARGETS evc-shared DESTINATION lib)
+endif()
+
+###### TESTS SECTION ######
+
+if(BUILD_TESTS)
+  add_subdirectory(${CMAKE_SOURCE_DIR}/Tests/)
+endif()
+
