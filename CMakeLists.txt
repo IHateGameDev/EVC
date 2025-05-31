@@ -39,7 +39,9 @@ endif()
 
 ###### INSTALL AND BUILDING SECTION ######
 
-install(DIRECTORIES ${CMAKE_SOURCE_DIR}/EVC/ DESTINATION include)
+install(DIRECTORIES ${CMAKE_SOURCE_DIR}/EVC/
+  DESTINATION include
+)
 
 file(GLOB_RECURSE LibSources
   ${CMAKE_SOURCE_DIR}/src/*.c
