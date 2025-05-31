@@ -39,7 +39,7 @@ endif()
 
 ###### INSTALL AND BUILDING SECTION ######
 
-install(DIRECTORIES ${CMAKE_SOURCE_DIR}/EVC/
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/EVC/
   DESTINATION include
 )
 
