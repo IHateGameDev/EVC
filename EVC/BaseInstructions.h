@@ -1,31 +1,7 @@
 #ifndef EVC_BASE_INSTRUCTIONS_H
 #define EVC_BASE_INSTRUCTIONS_H
 
-#include "config.h"
-
-#define READ_APPL(n)                                                           \
-  EvcSize appl##n = memory[memory[0]];                                         \
-  memory[0] += sizeof(EvcSize)
-
-#define EVC_PREPARE()                                                          \
-  READ_APPL();                                                                 \
-  READ_APPL(2);                                                                \
-  READ_APPL(3);
-
-#undef READ_APPL
-
-#define EVC_INSTRUCTION(opname)                                                \
-  switch (func) {                                                              \
-  case 0: opname(uint8_t) break;                                               \
-  case 1: opname(uint16_t) break;                                              \
-  case 2: opname(uint32_t) break;                                              \
-  }
-
-#define _APPL      memory[appl]
-#define _APPL2     memory[appl2]
-#define _APPL3     memory[appl3]
-#define _CONDITION memory[1]
-#define _IVALUE    memory[2]
+#include "Instruction.h"
 
 #define BASE_NONE(type)
 

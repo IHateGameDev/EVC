@@ -12,7 +12,7 @@
 #define EVC_VERSION_PATCH  1
 
 #define EVC_VERSION                                                            \
-  #EVC_VERSION_PREFIX #EVC_VERSION_MAJOR "." #EVC_VERSION_MINOR                \
-                                         "." #EVC_VERSION_PATCH
+  EVC_VERSION_PREFIX #EVC_VERSION_MAJOR "." #EVC_VERSION_MINOR                 \
+                                        "." #EVC_VERSION_PATCH
 
 #endif // !EVC_VERSION_H
