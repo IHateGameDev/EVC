@@ -3,18 +3,32 @@
 
 #include "config.h"
 
-#define GET_OPCODE memory[0] & 0b11111100
+// use (uint32_t or uint64_t)instruction & EVC_INSTRUCTION_FIELD
+#define EVC_OPCODE (0b000000000000000000001111111)
+#define EVC_TYPE   (0b000000000000000000110000000)
+
+#if EVC_ARCH == 32
+#define EVC_DT_ITYPE3 (0b000000000011111111000000000)
+#define EVC_DT_ITYPE2 (0b000001111111111111000000000)
+#define EVC_DT_ITYPE1 (0b111111111111111111000000000)
+#elif EVC_ARCH == 64
+#define EVC_DT_ITYPE3                                                          \
+  (0b00000000001111111111111111111111111111111111111111000000000)
+#define EVC_DT_ITYPE2                                                          \
+  (0b00000111111111111111111111111111111111111111111111000000000)
+#define EVC_DT_ITYPE1                                                          \
+  (0b11111111111111111111111111111111111111111111111111000000000)
+#endif // EVC_ARCH == *
+
+#define EVC_R3    (0b11111 << (EVC_ARCH - 15))
+#define EVC_R2    (0b11111 << (EVC_ARCH - 10))
+#define EVC_R1    (0b11111 << (EVC_ARCH - 5))
+#define EVC_DT(n) (((1 << n) - 1) << 9)
 
 #define GET_FUNC memory[0] & 0b00000011
 
-#define READ_APPL(n)                                                           \
-  EvcSize appl##n = memory[memory[0]];                                         \
-  memory[0] += 2
-
-#undef READ_APPL
-
 #if EVC_ARCH == 32
-#define EVC_INSTRUCTION(opname)                                                \
+#define EVC_TYPE_TYPE(opname)                                                  \
   switch (func) {                                                              \
   case 0: opname(uint8_t) break;                                               \
   case 1: opname(uint16_t) break;                                              \
